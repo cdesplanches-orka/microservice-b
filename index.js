@@ -7,7 +7,7 @@ app.get('/health', (req, res) => res.send('OK'));
 
 app.get('/call-a', async (req, res) => {
     try {
-        const response = await axios.get('http://microservice-a:3000/health');
+        const response = await axios.get('http://microservice-a:80/health');
         res.send(`Response from A: ${response.data}`);
     } catch (err) {
         res.status(500).send('Failed to call A');
