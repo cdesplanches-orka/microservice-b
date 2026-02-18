@@ -8,8 +8,8 @@ ARG NODE_AUTH_TOKEN
 COPY .npmrc .npmrc
 COPY package*.json ./
 
-# Installer dépendances strictement (reproductible)
-RUN npm ci --omit=dev
+# Installer dépendances (Industriel Level 3 - Auto-gen lock)
+RUN npm install --omit=dev
 RUN rm -f .npmrc
 
 # Copier tout le code
