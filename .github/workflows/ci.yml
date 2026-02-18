@@ -3,10 +3,10 @@ name: Microservice B CI
 on:
   push:
     paths:
-      - "ms-b/**"
+      - "apps/ms-b/**"
   pull_request:
     paths:
-      - "ms-b/**"
+      - "apps/ms-b/**"
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
           node-version: "18"
       - name: Install dependencies
         run: |
-          cd ms-b
+          cd apps/ms-b
           npm install
       - name: Lint (Placeholder)
         run: echo "Linting..."

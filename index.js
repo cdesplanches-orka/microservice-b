@@ -13,7 +13,7 @@ const MS_A_GRPC = process.env.MS_A_GRPC || 'localhost:50051';
 const SERVICE_A_URL = process.env.SERVICE_A_URL || 'http://microservice-a:80';
 
 // gRPC Setup
-const PROTO_PATH = path.join(__dirname, '../shared-protos/service.proto');
+const PROTO_PATH = path.join(__dirname, '../../shared/protos/service.proto');
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
     keepCase: true,
     longs: String,
