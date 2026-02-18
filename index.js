@@ -7,7 +7,7 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const MS_A_GRPC = process.env.MS_A_GRPC || 'localhost:50051';
+const MS_A_GRPC = process.env.SERVICE_A_GRPC || 'localhost:50051';
 
 // URL de microservice-A via env var
 const SERVICE_A_URL = process.env.SERVICE_A_URL || 'http://microservice-a:80';
