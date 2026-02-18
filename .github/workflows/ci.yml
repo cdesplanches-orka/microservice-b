@@ -1,4 +1,4 @@
-name: Microservice B CI
+name: Microservice B CI/CD
 
 on:
   push:
@@ -9,17 +9,52 @@ on:
       - "apps/ms-b/**"
 
 jobs:
-  build:
+  test-and-build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v3
+
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
+
       - name: Install dependencies
         run: |
           cd apps/ms-b
           npm install
-      - name: Lint (Placeholder)
-        run: echo "Linting..."
+
+      - name: Run Unit Tests
+        run: |
+          cd apps/ms-b
+          npm test
+
+      - name: Build Docker Image
+        run: |
+          cd apps/ms-b
+          docker build -t ghcr.io/${{ github.repository }}/ms-b:${{ github.sha }} .
+
+      - name: Smoke Test Container
+        run: |
+          docker run -d --name smoke-test -p 3001:3001 ghcr.io/${{ github.repository }}/ms-b:${{ github.sha }}
+          sleep 5
+          curl --fail http://localhost:3001/health || (docker logs smoke-test && exit 1)
+          docker stop smoke-test && docker rm smoke-test
+
+      - name: Log in to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push to GHCR
+        if: github.event_name != 'pull_request'
+        run: |
+          docker push ghcr.io/${{ github.repository }}/ms-b:${{ github.sha }}
+          docker tag ghcr.io/${{ github.repository }}/ms-b:${{ github.sha }} ghcr.io/${{ github.repository }}/ms-b:latest
+          docker push ghcr.io/${{ github.repository }}/ms-b:latest
