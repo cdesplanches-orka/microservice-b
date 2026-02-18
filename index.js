@@ -7,6 +7,12 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    next();
+});
+
 const MS_A_GRPC = process.env.SERVICE_A_GRPC || 'localhost:50051';
 
 // URL de microservice-A via env var
@@ -24,6 +30,7 @@ const packageDefinition = protoLoader.loadSync(grpcLib.protoPath, {
 const serviceProto = grpc.loadPackageDefinition(packageDefinition).service;
 const client = new serviceProto.DataService(MS_A_GRPC, grpc.credentials.createInsecure());
 
+app.get('/api/b/health', (req, res) => res.send('OK'));
 app.get('/health', (req, res) => res.send('OK'));
 
 app.get('/call-a', async (req, res) => {
