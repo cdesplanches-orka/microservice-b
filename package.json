@@ -9,7 +9,7 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.14.3",
     "@grpc/proto-loader": "^0.8.0",
-    "@cdesplanches-orka/grpc-lib": "file:../../shared/grpc-lib",
+    "@cdesplanches-orka/grpc-lib": "^1.0.0",
     "axios": "^1.5.0",
     "express": "^4.18.2"
   },
