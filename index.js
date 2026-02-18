@@ -12,9 +12,9 @@ const MS_A_GRPC = process.env.MS_A_GRPC || 'localhost:50051';
 // URL de microservice-A via env var
 const SERVICE_A_URL = process.env.SERVICE_A_URL || 'http://microservice-a:80';
 
-// gRPC Setup
-const PROTO_PATH = process.env.PROTO_PATH || path.join(__dirname, './protos/service.proto');
-const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+// gRPC Setup (Industrial Approach Level 3)
+const grpcLib = require('@cdesplanches-orka/grpc-lib');
+const packageDefinition = protoLoader.loadSync(grpcLib.protoPath, {
     keepCase: true,
     longs: String,
     enums: String,
