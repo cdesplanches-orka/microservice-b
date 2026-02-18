@@ -1,46 +1,25 @@
-name: CI Docker Build
+name: Microservice B CI
 
 on:
   push:
-    branches:
-      - master
-      - develop
+    paths:
+      - "ms-b/**"
   pull_request:
-  workflow_dispatch:
+    paths:
+      - "ms-b/**"
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      # 1️⃣ Checkout code
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      # 2️⃣ Login to GHCR
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
         with:
-          registry: ghcr.io
-          username: cdesplanches-orka
-          password: ${{ secrets.PAT }}
-
-      # 3️⃣ Build Docker image
-      - name: Build Docker image
+          node-version: "18"
+      - name: Install dependencies
         run: |
-          docker build -t ghcr.io/${{ github.actor }}/microservice-b:${{ github.sha }} .
-
-      # 4️⃣ Tag image as latest
-      - name: Tag Docker image as latest
-        run: |
-          docker tag ghcr.io/${{ github.actor }}/microservice-b:${{ github.sha }} ghcr.io/${{ github.actor }}/microservice-b:latest
-
-      # 5️⃣ Push SHA tag
-      - name: Push Docker image (SHA tag)
-        run: |
-          docker push ghcr.io/${{ github.actor }}/microservice-b:${{ github.sha }}
-
-      # 6️⃣ Push latest tag
-      - name: Push Docker image (latest tag)
-        run: |
-          docker push ghcr.io/${{ github.actor }}/microservice-b:latest
+          cd ms-b
+          npm install
+      - name: Lint (Placeholder)
+        run: echo "Linting..."
