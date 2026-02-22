@@ -14,6 +14,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.PAT }}
     steps:
       - uses: actions/checkout@v4
 
@@ -30,10 +32,7 @@ jobs:
           echo 'syntax = "proto3"; package service; service DataService { rpc GetData (DataRequest) returns (DataResponse); } message DataRequest { string id = 1; } message DataResponse { string data = 1; string source = 2; }' > protos/service.proto
 
       - name: Install dependencies
-        run: |
-          npm install
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.PAT }}
+        run: npm install
 
       - name: Run Unit Tests
         run: |
