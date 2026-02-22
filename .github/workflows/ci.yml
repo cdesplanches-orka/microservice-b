@@ -26,6 +26,9 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
           scope: "@cdesplanches-orka"
 
+      - name: Verify npm auth to GitHub Packages
+        run: npm whoami --registry=https://npm.pkg.github.com
+
       - name: Fetch Shared Protos
         run: |
           mkdir -p protos
